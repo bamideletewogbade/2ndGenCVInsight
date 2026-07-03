@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { atsStrokeColor } from '@/config/ui';
-import { MetricTooltip } from './MetricTooltip';
 
 interface GaugeChartProps {
   score: number;
@@ -50,19 +49,17 @@ export function GaugeChart({ score, size = 130, sizeSm }: GaugeChartProps) {
           className="transition-all duration-1000 ease-out"
         />
       </svg>
-      <MetricTooltip metricKey="ats-overall">
-        <div className="absolute flex flex-col items-center justify-center">
-          <span
-            className="font-heading text-2xl sm:text-3xl font-bold tracking-tight"
-            style={{ color: strokeColor }}
-          >
-            {score}
-          </span>
-          <span className="text-[9px] sm:text-[10px] text-muted-foreground tracking-wide uppercase mt-0.5">
-            score
-          </span>
-        </div>
-      </MetricTooltip>
+      <div className="absolute flex flex-col items-center justify-center">
+        <span
+          className="font-heading text-2xl sm:text-3xl font-bold tracking-tight"
+          style={{ color: strokeColor }}
+        >
+          {score}
+        </span>
+        <span className="text-[9px] sm:text-[10px] text-muted-foreground tracking-wide uppercase mt-0.5">
+          score
+        </span>
+      </div>
     </div>
   );
 }

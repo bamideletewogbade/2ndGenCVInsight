@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { GaugeChart } from '@/components/metrics/GaugeChart';
-import { MetricTooltip } from '@/components/metrics/MetricTooltip';
 import { atsScoreColor } from '@/config/ui';
 import type { ATSScore, ATSScoreBreakdown } from '@/types/analysis';
 
@@ -42,22 +41,20 @@ export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
         {/* Breakdown — horizontal bar chart layout */}
         <div className="grid grid-cols-2 gap-x-5 gap-y-3 sm:grid-cols-1">
           {scores.map((s) => (
-            <MetricTooltip key={s.key} metricKey={`ats-${s.key}`}>
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[12px] text-muted-foreground">{s.label}</span>
-                  <span className={`text-[12px] font-mono font-medium ${atsScoreColor(s.value)}`}>
-                    {s.value}
-                  </span>
-                </div>
-                <div className="relative h-1 w-full overflow-hidden rounded-full bg-secondary">
-                  <div
-                    className="absolute inset-y-0 left-0 rounded-full bg-foreground transition-all duration-700 ease-out"
-                    style={{ width: `${s.value}%` }}
-                  />
-                </div>
+            <div key={s.key}>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[12px] text-muted-foreground">{s.label}</span>
+                <span className={`text-[12px] font-mono font-medium ${atsScoreColor(s.value)}`}>
+                  {s.value}
+                </span>
               </div>
-            </MetricTooltip>
+              <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                <div
+                  className="absolute inset-y-0 left-0 rounded-full bg-foreground transition-all duration-700 ease-out"
+                  style={{ width: `${s.value}%` }}
+                />
+              </div>
+            </div>
           ))}
         </div>
 

@@ -33,12 +33,12 @@ export function DashboardGrid({ data, metrics }: DashboardGridProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       <motion.div
         variants={containerVariants}
         initial="initial"
         animate="animate"
-        className="flex flex-col"
+        className="flex flex-col gap-5"
       >
         <motion.div variants={itemVariants}>
           <SummaryCard summary={data.summary} totalSkills={data.skills.reduce((acc, c) => acc + c.items.length, 0)} />
@@ -76,7 +76,7 @@ export function DashboardGrid({ data, metrics }: DashboardGridProps) {
       </motion.div>
 
       {/* Desktop "Analyze Another" button */}
-      <div className="hidden sm:flex justify-center pt-6 pb-10">
+      <div className="hidden sm:flex justify-center pt-8 pb-10">
         <Button
           variant="outline"
           onClick={() => navigate('/upload')}
