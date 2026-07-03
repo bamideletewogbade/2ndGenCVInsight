@@ -1,49 +1,46 @@
 export const colors = {
   primary: {
-    50: '#eef2ff',
-    100: '#e0e7ff',
-    500: '#6366f1',
-    600: '#4f46e5',
-    700: '#4338ca',
+    DEFAULT: '#171717',
+    foreground: '#fafafa',
   },
   accent: {
-    400: '#fbbf24',
-    500: '#f59e0b',
+    DEFAULT: '#171717',
+    foreground: '#fafafa',
   },
-  success: '#22c55e',
-  warning: '#f59e0b',
-  danger: '#ef4444',
-  info: '#6366f1',
+  success: '#16a34a',
+  warning: '#ca8a04',
+  danger: '#dc2626',
+  info: '#171717',
 };
 
 export const skillCategoryColors: Record<string, string> = {
-  'Programming Languages': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  'Frameworks': 'bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-300',
-  'Cloud': 'bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300',
-  'Databases': 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
-  'AI/ML': 'bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300',
-  'Soft Skills': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-  'Tools': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+  'Programming Languages': 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200',
+  'Frameworks': 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800/70 dark:text-neutral-300',
+  'Cloud': 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800/50 dark:text-neutral-400',
+  'Databases': 'bg-neutral-50 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200',
+  'AI/ML': 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200',
+  'Soft Skills': 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800/60 dark:text-neutral-300',
+  'Tools': 'bg-neutral-50 text-neutral-600 dark:bg-neutral-800/40 dark:text-neutral-400',
 };
 
 export const atsScoreColor = (score: number): string => {
-  if (score >= 70) return 'text-green-500';
-  if (score >= 50) return 'text-amber-500';
-  return 'text-red-500';
+  if (score >= 70) return 'text-green-600 dark:text-green-400';
+  if (score >= 50) return 'text-amber-600 dark:text-amber-400';
+  return 'text-red-600 dark:text-red-400';
 };
 
 export const atsStrokeColor = (score: number): string => {
-  if (score >= 70) return '#22c55e';
-  if (score >= 50) return '#f59e0b';
-  return '#ef4444';
+  if (score >= 70) return '#16a34a';
+  if (score >= 50) return '#ca8a04';
+  return '#dc2626';
 };
 
 export const animation = {
-  stagger: 0.05,
+  stagger: 0.06,
   fadeUp: {
-    initial: { opacity: 0, y: 12 },
+    initial: { opacity: 0, y: 16 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, ease: 'easeOut' as const },
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const },
   },
   tooltip: {
     initial: { opacity: 0, y: 4 },

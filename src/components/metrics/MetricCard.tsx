@@ -9,13 +9,13 @@ interface MetricCardProps {
 
 export function MetricCard({ metricKey, label, value, valueClassName = '' }: MetricCardProps) {
   return (
-    <div className="flex flex-col gap-1 p-3 rounded-lg bg-muted/50 border border-border/50">
+    <div className="flex flex-col gap-1.5 py-3 px-4">
       <MetricTooltip metricKey={metricKey}>
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.1em]">
           {label}
         </span>
       </MetricTooltip>
-      <div className={`text-sm font-mono font-medium ${valueClassName}`}>
+      <div className={`text-[13px] font-mono font-medium ${valueClassName}`}>
         {value}
       </div>
     </div>

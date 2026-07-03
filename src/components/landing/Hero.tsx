@@ -1,55 +1,64 @@
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowUpRight } from 'lucide-react';
 
 export function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-amber-50 dark:from-stone-950 dark:via-stone-900 dark:to-stone-950" />
-      <div className="absolute inset-0 opacity-30 dark:opacity-20">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl" />
-      </div>
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
-            Analyze your CV with{' '}
-            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              production-grade
-            </span>{' '}
-            AI engineering.
-          </h1>
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-          className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
-        >
-          Upload your resume, get actionable feedback, and see exactly how the AI system works — every metric, every decision, explained.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-          className="mt-10"
-        >
-          <Button
-            size="lg"
-            onClick={() => navigate('/upload')}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 text-base gap-2 shadow-lg shadow-indigo-500/25"
+    <section className="relative">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8">
+        <div className="pt-24 pb-20 sm:pt-32 sm:pb-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <Sparkles className="w-4 h-4" />
-            Upload Resume
-          </Button>
-        </motion.div>
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground mb-6">
+              Resume Analysis
+            </p>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+            className="font-heading text-[clamp(2rem,6vw,3.75rem)] font-bold leading-[1.08] tracking-[-0.025em] text-foreground max-w-3xl"
+          >
+            Understand your CV
+            <br />
+            <span className="text-muted-foreground">through the lens</span> of AI.
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-6 text-[15px] text-muted-foreground max-w-lg leading-relaxed"
+          >
+            Upload your resume, get actionable feedback, and see every metric behind the analysis — latency, tokens, cost, model selection — all explained in plain language.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.24, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-10 flex items-center gap-3"
+          >
+            <Button
+              size="lg"
+              onClick={() => navigate('/upload')}
+              className="rounded-full gap-2 group"
+            >
+              Upload Resume
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Button>
+            <p className="text-[11px] text-muted-foreground">
+              PDF or DOCX · No sign-up
+            </p>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

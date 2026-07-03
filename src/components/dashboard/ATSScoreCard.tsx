@@ -31,30 +31,30 @@ export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle>ATS Compatibility Score</CardTitle>
+        <CardTitle>ATS Score</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-5">
         <div className="flex justify-center">
           <GaugeChart score={atsScore.overall} />
         </div>
-        <p className="text-sm text-muted-foreground text-center">{atsScore.notes}</p>
+        <p className="text-[12px] text-muted-foreground text-center leading-relaxed">{atsScore.notes}</p>
         <div className="space-y-3">
           {subScores.map((sub, i) => (
             <div key={sub.key}>
               <MetricTooltip metricKey={sub.key}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground">{sub.label}</span>
-                  <span className={`text-xs font-semibold ${atsScoreColor(breakdownValues[i])}`}>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[11px] text-muted-foreground">{sub.label}</span>
+                  <span className={`text-[11px] font-mono font-medium ${atsScoreColor(breakdownValues[i])}`}>
                     {breakdownValues[i]}
                   </span>
                 </div>
               </MetricTooltip>
-              <Progress value={breakdownValues[i]} className="h-1.5" />
+              <Progress value={breakdownValues[i]} />
             </div>
           ))}
         </div>
-        <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
-          This is an estimated score for educational purposes, not an official ATS assessment.
+        <p className="text-[10px] text-muted-foreground/70 text-center leading-relaxed">
+          Estimated score for educational purposes — not an official ATS assessment.
         </p>
       </CardContent>
     </Card>

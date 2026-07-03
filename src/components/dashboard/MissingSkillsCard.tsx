@@ -11,90 +11,67 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
   const isLowMatch = missingSkills.matchPercentage < 50;
 
   return (
-    <Card className="col-span-1 md:col-span-2">
+    <Card className="md:col-span-2">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Missing Skills</CardTitle>
+        <div className="flex items-start justify-between">
+          <div>
+            <CardTitle>Missing Skills</CardTitle>
+            {isHighMatch && (
+              <p className="text-[12px] text-green-700 dark:text-green-400 mt-1">
+                Strong match — your resume covers most required skills.
+              </p>
+            )}
+            {isLowMatch && (
+              <p className="text-[12px] text-red-700 dark:text-red-400 mt-1">
+                Significant gaps. Consider addressing these to improve your match.
+              </p>
+            )}
+            {!isHighMatch && !isLowMatch && (
+              <p className="text-[12px] text-amber-700 dark:text-amber-400 mt-1">
+                Moderate match. Some skills gaps to address.
+              </p>
+            )}
+          </div>
           <MetricTooltip metricKey="match-percentage">
-            <div className="text-right">
-              <span className={`text-2xl font-bold ${isHighMatch ? 'text-green-500' : isLowMatch ? 'text-red-500' : 'text-amber-500'}`}>
+            <div className="text-right shrink-0 ml-4">
+              <span className={`font-heading text-2xl font-bold tracking-tight ${isHighMatch ? 'text-green-600 dark:text-green-400' : isLowMatch ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}>
                 {missingSkills.matchPercentage}%
               </span>
-              <p className="text-[10px] text-muted-foreground">match</p>
             </div>
           </MetricTooltip>
         </div>
-        {isHighMatch && (
-          <p className="text-sm text-green-600 dark:text-green-400 mt-1">
-            Strong match! Your resume covers most of the required skills.
-          </p>
-        )}
-        {isLowMatch && (
-          <p className="text-sm text-red-600 dark:text-red-400 mt-1">
-            Significant gaps exist. Consider addressing these to improve your match.
-          </p>
-        )}
-        {!isHighMatch && !isLowMatch && (
-          <p className="text-sm text-amber-600 dark:text-amber-400 mt-1">
-            Moderate match. Some skills gaps to address.
-          </p>
-        )}
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div>
-            <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Technologies</h4>
-            {missingSkills.technologies.length > 0 ? (
-              <ul className="space-y-1.5">
-                {missingSkills.technologies.map((t, i) => (
-                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-muted-foreground">None identified</p>
-            )}
-          </div>
-          <div>
-            <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Certifications</h4>
-            {missingSkills.certifications.length > 0 ? (
-              <ul className="space-y-1.5">
-                {missingSkills.certifications.map((c, i) => (
-                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-muted-foreground">None identified</p>
-            )}
-          </div>
-          <div>
-            <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Soft Skills</h4>
-            {missingSkills.softSkills.length > 0 ? (
-              <ul className="space-y-1.5">
-                {missingSkills.softSkills.map((s, i) => (
-                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-muted-foreground">None identified</p>
-            )}
-          </div>
+          {([
+            { title: 'Technologies', items: missingSkills.technologies },
+            { title: 'Certifications', items: missingSkills.certifications },
+            { title: 'Soft Skills', items: missingSkills.softSkills },
+          ] as const).map((col) => (
+            <div key={col.title}>
+              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">{col.title}</p>
+              {col.items.length > 0 ? (
+                <ul className="space-y-1.5">
+                  {col.items.map((item, i) => (
+                    <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                      <span className="w-px h-3 bg-foreground/30 mt-[7px] shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[12px] text-muted-foreground">None identified</p>
+              )}
+            </div>
+          ))}
         </div>
         {missingSkills.recommendations.length > 0 && (
           <div>
-            <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Recommendations</h4>
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">Recommendations</p>
             <ul className="space-y-1.5">
               {missingSkills.recommendations.map((r, i) => (
-                <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-indigo-400 mt-1.5 shrink-0" />
+                <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                  <span className="w-px h-3 bg-foreground/30 mt-[7px] shrink-0" />
                   {r}
                 </li>
               ))}

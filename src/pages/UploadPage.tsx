@@ -10,7 +10,7 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/component
 import { useAnalysis, type AnalysisStatus } from '@/hooks/useAnalysis';
 import { useToast } from '@/hooks/use-toast';
 import { getApiKey, MAX_FILE_SIZE_MB } from '@/config/models';
-import { ChevronDown, Sparkles, Key, AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
+import { CaretDown, Key, Warning, ArrowCounterClockwise, WifiSlash, ArrowUpRight } from '@phosphor-icons/react';
 
 export function UploadPage() {
   const navigate = useNavigate();
@@ -27,14 +27,12 @@ export function UploadPage() {
     setApiKeyMissing(!getApiKey());
   }, []);
 
-  // Navigate to dashboard on success
   useEffect(() => {
     if (status === 'success' && result && metrics) {
       navigate('/dashboard', { state: { result, metrics } });
     }
   }, [status, result, metrics, navigate]);
 
-  // Show toast errors
   useEffect(() => {
     if (error) {
       if (error.type === 'network') {
@@ -72,29 +70,29 @@ export function UploadPage() {
 
   const isLoading = ['extracting', 'sending', 'analyzing', 'preparing'].includes(status);
 
-  // API key missing card
+  // API key missing
   if (apiKeyMissing && status === 'idle') {
     return (
       <PageTransition>
         <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-lg w-full">
+          <Card className="max-w-md w-full">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4">
-                <Key className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <Key size={18} weight="regular" className="text-foreground/70" />
               </div>
               <CardTitle>API Key Not Found</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center leading-relaxed">
-                Create a <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">.env</code> file in the project root with:
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
+                Create a <code className="rounded bg-secondary px-1.5 py-0.5 text-[11px] font-mono">.env</code> file in the project root:
               </p>
-              <div className="bg-muted rounded-lg p-3">
-                <code className="text-xs font-mono text-foreground">VITE_NVIDIA_API_KEY=your-key-here</code>
+              <div className="bg-secondary/50 rounded-[var(--radius)] p-3">
+                <code className="text-[11px] font-mono text-foreground">VITE_NVIDIA_API_KEY=your-key-here</code>
               </div>
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-[13px] text-muted-foreground text-center">
                 Get a free key at{' '}
-                <a href="https://build.nvidia.com" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                  build.nvidia.com
+                <a href="https://build.nvidia.com" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline inline-flex items-center gap-0.5">
+                  build.nvidia.com <ArrowUpRight size={10} weight="bold" className="mt-px" />
                 </a>
               </p>
             </CardContent>
@@ -104,26 +102,26 @@ export function UploadPage() {
     );
   }
 
-  // All models failed error
+  // All models failed
   if (status === 'error' && error && (error.type === 'all_models_failed' || error.type === 'json_failed')) {
     return (
       <PageTransition>
         <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-lg w-full">
+          <Card className="max-w-md w-full">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
-                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <Warning size={18} weight="regular" className="text-foreground/70" />
               </div>
               <CardTitle>Analysis Unavailable</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center leading-relaxed">
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
                 {error.message}
-                {error.type === 'json_failed' && ' The AI returned responses that couldn\'t be parsed. This is rare but can happen with complex resumes.'}
+                {error.type === 'json_failed' && ' The AI returned responses that couldn\'t be parsed.'}
               </p>
               <div className="flex justify-center">
-                <Button variant="outline" onClick={() => { reset(); }} className="gap-2">
-                  <RefreshCw className="w-4 h-4" />
+                <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
+                  <ArrowCounterClockwise size={14} weight="bold" />
                   Try Again
                 </Button>
               </div>
@@ -139,20 +137,18 @@ export function UploadPage() {
     return (
       <PageTransition>
         <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-lg w-full">
+          <Card className="max-w-md w-full">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4">
-                <WifiOff className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <WifiSlash size={18} weight="regular" className="text-foreground/70" />
               </div>
               <CardTitle>You Appear to Be Offline</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center leading-relaxed">
-                {error.message}
-              </p>
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
               <div className="flex justify-center">
-                <Button variant="outline" onClick={() => { reset(); }} className="gap-2">
-                  <RefreshCw className="w-4 h-4" />
+                <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
+                  <ArrowCounterClockwise size={14} weight="bold" />
                   Retry
                 </Button>
               </div>
@@ -168,20 +164,18 @@ export function UploadPage() {
     return (
       <PageTransition>
         <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-lg w-full">
+          <Card className="max-w-md w-full">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
-                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <Warning size={18} weight="regular" className="text-foreground/70" />
               </div>
               <CardTitle>Text Extraction Failed</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center leading-relaxed">
-                {error.message}
-              </p>
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
               <div className="flex justify-center">
-                <Button variant="outline" onClick={() => { reset(); }} className="gap-2">
-                  <RefreshCw className="w-4 h-4" />
+                <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
+                  <ArrowCounterClockwise size={14} weight="bold" />
                   Upload Different File
                 </Button>
               </div>
@@ -195,7 +189,7 @@ export function UploadPage() {
   return (
     <PageTransition>
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
-        <div className="w-full max-w-2xl space-y-6">
+        <div className="w-full max-w-xl space-y-6">
           {isLoading ? (
             <AnalysisLoader stage={status as Exclude<AnalysisStatus, 'idle' | 'success' | 'error'>} fallbackMessage={fallbackMessage} />
           ) : (
@@ -210,11 +204,10 @@ export function UploadPage() {
                   <FilePreview file={file} isValid={isFileValid} onRemove={handleRemoveFile} />
                 )}
 
-                {/* Optional Job Description */}
                 {file && isFileValid && (
                   <Collapsible open={jdOpen} onOpenChange={setJdOpen}>
-                    <CollapsibleTrigger className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
-                      <ChevronDown className={`w-4 h-4 transition-transform ${jdOpen ? 'rotate-180' : ''}`} />
+                    <CollapsibleTrigger className="flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 cursor-pointer">
+                      <CaretDown size={12} weight="bold" className={`transition-transform ${jdOpen ? 'rotate-180' : ''}`} />
                       Add a target job description (optional)
                     </CollapsibleTrigger>
                     <CollapsibleContent className="pt-2">
@@ -222,24 +215,23 @@ export function UploadPage() {
                         value={jobDescription}
                         onChange={(e) => setJobDescription(e.target.value)}
                         placeholder="Paste the job description here to get tailored missing-skills analysis..."
-                        className="w-full min-h-[120px] rounded-lg border border-gray-200 dark:border-gray-700 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground resize-y focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        className="w-full min-h-[120px] rounded-[var(--radius)] border border-border bg-background px-3 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 resize-y focus:outline-none focus:ring-1 focus:ring-foreground/20 transition-shadow"
                       />
-                      <p className="text-xs text-muted-foreground mt-1 text-right">
-                        {jobDescription.length.toLocaleString()} characters
+                      <p className="text-[11px] text-muted-foreground mt-1.5 text-right font-mono">
+                        {jobDescription.length.toLocaleString()} chars
                       </p>
                     </CollapsibleContent>
                   </Collapsible>
                 )}
 
-                {/* Analyze Button */}
                 {file && isFileValid && (
                   <Button
                     onClick={handleAnalyze}
-                    className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/25"
+                    className="w-full rounded-full gap-2 group"
                     size="lg"
                   >
-                    <Sparkles className="w-4 h-4" />
                     Analyze
+                    <ArrowUpRight size={14} weight="bold" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Button>
                 )}
               </CardContent>

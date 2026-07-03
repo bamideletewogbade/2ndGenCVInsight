@@ -6,8 +6,8 @@ interface GaugeChartProps {
   size?: number;
 }
 
-export function GaugeChart({ score, size = 140 }: GaugeChartProps) {
-  const radius = (size - 16) / 2;
+export function GaugeChart({ score, size = 130 }: GaugeChartProps) {
+  const radius = (size - 20) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = (score / 100) * circumference;
   const strokeColor = atsStrokeColor(score);
@@ -20,16 +20,16 @@ export function GaugeChart({ score, size = 140 }: GaugeChartProps) {
           cy={size / 2}
           r={radius}
           stroke="currentColor"
-          strokeWidth="10"
+          strokeWidth="6"
           fill="none"
-          className="text-muted/50"
+          className="text-secondary"
         />
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           stroke={strokeColor}
-          strokeWidth="10"
+          strokeWidth="6"
           fill="none"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -39,10 +39,10 @@ export function GaugeChart({ score, size = 140 }: GaugeChartProps) {
       </svg>
       <MetricTooltip metricKey="ats-overall">
         <div className="absolute flex flex-col items-center justify-center">
-          <span className="text-3xl font-bold" style={{ color: strokeColor }}>
+          <span className="font-heading text-3xl font-bold tracking-tight" style={{ color: strokeColor }}>
             {score}
           </span>
-          <span className="text-xs text-muted-foreground">/ 100</span>
+          <span className="text-[10px] text-muted-foreground tracking-wide uppercase mt-0.5">score</span>
         </div>
       </MetricTooltip>
     </div>

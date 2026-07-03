@@ -11,12 +11,12 @@ export function SkillsCard({ skills }: SkillsCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Skills Extraction</CardTitle>
+        <CardTitle>Skills</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         {skills.map((category) => (
           <div key={category.category}>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2.5">
               {category.category}
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -25,7 +25,7 @@ export function SkillsCard({ skills }: SkillsCardProps) {
                 return (
                   <span
                     key={skill}
-                    className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium', colorClass)}
+                    className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium', colorClass)}
                   >
                     {skill}
                   </span>

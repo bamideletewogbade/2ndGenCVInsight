@@ -1,4 +1,4 @@
-import { X, CheckCircle2, FileText } from 'lucide-react';
+import { X, Check, FileText } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 
 interface FilePreviewProps {
@@ -17,28 +17,28 @@ export function FilePreview({ file, isValid, onRemove }: FilePreviewProps) {
   const ext = file.name.split('.').pop()?.toUpperCase() ?? 'FILE';
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+    <div className="flex items-center gap-3 p-3 rounded-[var(--radius)] border border-border/60 bg-secondary/30">
+      <div className="flex items-center justify-center w-9 h-9 rounded-md bg-background border border-border/60">
+        <FileText size={18} weight="regular" className="text-foreground/70" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+        <p className="text-[13px] font-medium text-foreground truncate">{file.name}</p>
         <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
-          <Badge variant="outline" className="text-[10px]">{ext}</Badge>
+          <span className="text-[11px] text-muted-foreground">{formatFileSize(file.size)}</span>
+          <Badge variant="outline" className="text-[9px]">{ext}</Badge>
         </div>
       </div>
       <div className="flex items-center gap-2">
         {isValid ? (
-          <CheckCircle2 className="w-5 h-5 text-green-500" />
+          <Check size={16} weight="bold" className="text-green-600 dark:text-green-400" />
         ) : (
-          <X className="w-5 h-5 text-red-500" />
+          <X size={16} weight="bold" className="text-red-500" />
         )}
         <button
           onClick={(e) => { e.stopPropagation(); onRemove(); }}
-          className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
         >
-          <X className="w-3.5 h-3.5" />
+          <X size={12} weight="bold" />
         </button>
       </div>
     </div>

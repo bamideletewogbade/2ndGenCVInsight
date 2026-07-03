@@ -12,17 +12,21 @@ interface FeatureCardProps {
 export function FeatureCard({ icon, title, description, index }: FeatureCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ ...animation.fadeUp.transition, delay: index * animation.stagger }}
-      className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-stone-900 p-6 shadow-sm hover:shadow-md transition-shadow"
+      className="group p-6 rounded-[var(--radius)] border border-transparent hover:border-border/60 transition-colors duration-300"
     >
-      <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4">
+      <div className="text-foreground/70 mb-4 group-hover:text-foreground transition-colors">
         {icon}
       </div>
-      <h3 className="text-base font-semibold text-foreground mb-2">{title}</h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+      <h3 className="font-heading text-sm font-semibold tracking-tight text-foreground mb-2">
+        {title}
+      </h3>
+      <p className="text-[13px] text-muted-foreground leading-relaxed">
+        {description}
+      </p>
     </motion.div>
   );
 }

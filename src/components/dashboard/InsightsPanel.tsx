@@ -8,15 +8,17 @@ interface InsightsPanelProps {
 
 export function InsightsPanel({ metrics }: InsightsPanelProps) {
   return (
-    <Card className="bg-muted/30">
+    <Card>
       <CardHeader>
         <CardTitle>AI Request Insights</CardTitle>
         <CardDescription>
           Operational metrics from this analysis — the same kind of dashboard AI engineers use to monitor production systems.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <MetricGrid metrics={metrics} />
+      <CardContent className="-mx-5 -mb-5 mt-0">
+        <div className="bg-secondary/40 rounded-b-[var(--radius)]">
+          <MetricGrid metrics={metrics} />
+        </div>
       </CardContent>
     </Card>
   );

@@ -3,7 +3,7 @@ import { PageTransition } from '@/components/layout/PageTransition';
 import { DashboardGrid } from '@/components/dashboard/DashboardGrid';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { AlertTriangle, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Warning, ArrowLeft } from '@phosphor-icons/react';
 import type { AnalysisResponse } from '@/types/analysis';
 import type { AIRequestMetrics } from '@/types/metrics';
 
@@ -16,20 +16,20 @@ export function DashboardPage() {
     return (
       <PageTransition>
         <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-md w-full">
+          <Card className="max-w-sm w-full">
             <CardHeader className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4">
-                <AlertTriangle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <Warning size={18} weight="regular" className="text-foreground/70" />
               </div>
-              <h2 className="text-lg font-semibold">No Analysis Data</h2>
+              <h2 className="font-heading text-base font-semibold tracking-tight">No Analysis Data</h2>
             </CardHeader>
             <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground text-center">
-                It looks like you navigated here directly. Please upload a resume first to see your analysis.
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
+                Please upload a resume first to see your analysis.
               </p>
-              <div className="flex justify-center gap-3">
-                <Button variant="outline" onClick={() => navigate('/upload')} className="gap-2">
-                  <ArrowLeft className="w-4 h-4" />
+              <div className="flex justify-center">
+                <Button variant="outline" onClick={() => navigate('/upload')} className="rounded-full gap-1.5">
+                  <ArrowLeft size={14} weight="bold" />
                   Upload Resume
                 </Button>
               </div>
@@ -42,7 +42,7 @@ export function DashboardPage() {
 
   return (
     <PageTransition>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 py-8">
         <DashboardGrid data={state.result} metrics={state.metrics} />
       </div>
     </PageTransition>

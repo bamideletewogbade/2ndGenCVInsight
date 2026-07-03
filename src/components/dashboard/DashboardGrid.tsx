@@ -8,7 +8,7 @@ import { MissingSkillsCard } from './MissingSkillsCard';
 import { InsightsPanel } from './InsightsPanel';
 import { ResponsibleAICard } from './ResponsibleAICard';
 import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
+import { ArrowCounterClockwise } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 import type { AnalysisResponse } from '@/types/analysis';
 import type { AIRequestMetrics } from '@/types/metrics';
@@ -20,9 +20,7 @@ interface DashboardGridProps {
 }
 
 const containerVariants = {
-  animate: {
-    transition: { staggerChildren: animation.stagger },
-  },
+  animate: { transition: { staggerChildren: animation.stagger } },
 };
 
 const itemVariants = {
@@ -35,12 +33,12 @@ export function DashboardGrid({ data, metrics }: DashboardGridProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <motion.div
         variants={containerVariants}
         initial="initial"
         animate="animate"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
         <motion.div variants={itemVariants}>
           <SummaryCard summary={data.summary} />
@@ -64,29 +62,21 @@ export function DashboardGrid({ data, metrics }: DashboardGridProps) {
         )}
       </motion.div>
 
-      <motion.div
-        variants={itemVariants}
-        initial="initial"
-        animate="animate"
-      >
+      <motion.div variants={itemVariants} initial="initial" animate="animate">
         <InsightsPanel metrics={metrics} />
       </motion.div>
 
-      <motion.div
-        variants={itemVariants}
-        initial="initial"
-        animate="animate"
-      >
+      <motion.div variants={itemVariants} initial="initial" animate="animate">
         <ResponsibleAICard />
       </motion.div>
 
-      <div className="flex justify-center pt-4 pb-8">
+      <div className="flex justify-center pt-6 pb-10">
         <Button
           variant="outline"
           onClick={() => navigate('/upload')}
-          className="gap-2"
+          className="rounded-full gap-2 group"
         >
-          <RotateCcw className="w-4 h-4" />
+          <ArrowCounterClockwise size={14} weight="bold" />
           Analyze Another
         </Button>
       </div>
