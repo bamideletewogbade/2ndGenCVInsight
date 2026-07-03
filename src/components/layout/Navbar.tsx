@@ -26,7 +26,7 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
         scrolled && 'shadow-[0_1px_0_0_var(--border)]'
       )}
     >
-      <div className="max-w-5xl mx-auto px-5 sm:px-8">
+      <div className="w-full px-5 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-12 sm:h-14">
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-7 h-7 rounded-md bg-foreground flex items-center justify-center">
