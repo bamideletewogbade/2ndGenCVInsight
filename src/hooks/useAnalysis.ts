@@ -1,12 +1,6 @@
 import { useState, useCallback } from 'react';
-import { extractTextFromPDF } from '@/lib/pdf-parser';
-import { extractTextFromDOCX } from '@/lib/docx-parser';
-import { cleanText, ParseError } from '@/lib/text-cleaner';
-import { callLLM, buildMetricsFromResult } from '@/lib/ai-client';
-import { getSystemPrompt, buildAnalysisUserPrompt } from '@/lib/prompt-templates';
 import type { AnalysisResponse } from '@/types/analysis';
 import type { AIRequestMetrics } from '@/types/metrics';
-import { MAX_FILE_SIZE_MB } from '@/config/models';
 
 export type AnalysisStatus =
   | 'idle'
@@ -18,8 +12,21 @@ export type AnalysisStatus =
   | 'error';
 
 export interface AnalysisError {
-  type: 'file_type' | 'file_size' | 'parse' | 'api_key' | 'api_key_invalid' | 'all_models_failed' | 'json_failed' | 'network' | 'unknown';
+  type: 'file_type' | 'file_size' | 'parse' | 'api_error' | 'all_models_failed' | 'json_failed' | 'network' | 'server' | 'unknown';
   message: string;
+}
+
+const API_BASE = '/api';
+
+interface BackendResponse {
+  analysis: AnalysisResponse;
+  metrics: AIRequestMetrics;
+  fallback_message: string | null;
+}
+
+interface BackendError {
+  detail: string;
+  type?: string;
 }
 
 export function useAnalysis() {
@@ -45,9 +52,9 @@ export function useAnalysis() {
       return;
     }
 
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-      setError({ type: 'file_size', message: `File is too large. Please upload a file under ${MAX_FILE_SIZE_MB}MB.` });
+    // Validate file size (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setError({ type: 'file_size', message: 'File is too large. Please upload a file under 10MB.' });
       return;
     }
 
@@ -57,69 +64,69 @@ export function useAnalysis() {
     setFallbackMessage(null);
 
     try {
-      // Stage 1: Extract text
+      // Stage 1: Building request
       setStatus('extracting');
-      let rawText: string;
 
-      if (file.name.toLowerCase().endsWith('.pdf')) {
-        rawText = await extractTextFromPDF(file);
-      } else {
-        rawText = await extractTextFromDOCX(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      if (jobDescription && jobDescription.trim()) {
+        formData.append('job_description', jobDescription.trim());
       }
 
-      const resumeText = cleanText(rawText);
-
-      // Stage 2: Send to AI
+      // Stage 2: Sending to backend
       setStatus('sending');
-      const systemPrompt = getSystemPrompt();
-      const userPrompt = buildAnalysisUserPrompt(resumeText, jobDescription);
 
+      const response = await fetch(`${API_BASE}/analyze`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      // Stage 3: Analyzing (backend is processing)
       setStatus('analyzing');
 
-      const llmResult = await callLLM(systemPrompt, userPrompt);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: `Server error (${response.status})` })) as BackendError;
 
-      if (llmResult.fallbackTriggered) {
-        setFallbackMessage('Primary model unavailable — switching to fallback...');
+        if (response.status === 413) {
+          throw { type: 'file_size' as const, message: 'File is too large. Please upload a file under 10MB.' };
+        }
+        if (response.status === 422) {
+          throw { type: 'file_type' as const, message: errorData.detail || 'Invalid file type. Please upload a PDF or DOCX.' };
+        }
+        if (response.status === 502 || response.status === 504) {
+          throw { type: 'all_models_failed' as const, message: 'Analysis Unavailable — All AI models are currently unreachable. This may be a temporary issue with the NVIDIA NIM platform. Please try again in a moment.' };
+        }
+
+        // Try to parse backend error type
+        const errorType = errorData.type || 'server';
+        throw { type: errorType as AnalysisError['type'], message: errorData.detail || 'An unexpected server error occurred.' };
       }
 
-      // Stage 4: Prepare dashboard
+      const data: BackendResponse = await response.json();
+
+      // Stage 4: Preparing dashboard
       setStatus('preparing');
 
-      const parsed = llmResult.parsed as unknown as AnalysisResponse;
-      const metricsData = buildMetricsFromResult(llmResult);
-
-      setResult(parsed);
-      setMetrics(metricsData);
+      setResult(data.analysis);
+      setMetrics(data.metrics);
+      if (data.fallback_message) {
+        setFallbackMessage(data.fallback_message);
+      }
       setStatus('success');
     } catch (err: unknown) {
       setStatus('error');
 
-      if (err instanceof ParseError) {
+      if (err instanceof TypeError && err.message === 'Failed to fetch') {
         setError({
-          type: 'parse',
-          message: "We couldn't extract enough text from this file. This usually means the PDF is image-based (scanned). Please upload a text-based PDF or DOCX.",
+          type: 'network',
+          message: 'Unable to reach the server. Please ensure the backend is running (python backend/run.sh) and try again.',
         });
       } else if (err instanceof Error) {
         const msg = err.message;
-        if (msg === 'API_KEY_MISSING') {
-          setError({
-            type: 'api_key',
-            message: 'API Key Not Found — Create a `.env` file in the project root with `VITE_NVIDIA_API_KEY=your-key-here`. Get a free key at build.nvidia.com.',
-          });
-        } else if (msg === 'API_KEY_INVALID') {
-          setError({
-            type: 'api_key_invalid',
-            message: 'The API key appears to be invalid. Please check your VITE_NVIDIA_API_KEY in the .env file.',
-          });
-        } else if (msg.includes('All models failed') || msg.includes('All AI models failed')) {
-          setError({
-            type: 'all_models_failed',
-            message: 'Analysis Unavailable — All AI models are currently unreachable. This may be a temporary issue with the NVIDIA NIM platform. Please try again in a moment.',
-          });
-        } else if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('net::')) {
+        if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('net::')) {
           setError({
             type: 'network',
-            message: 'You appear to be offline. Please check your connection and try again.',
+            message: 'Unable to reach the server. Please ensure the backend is running and try again.',
           });
         } else {
           setError({
@@ -127,6 +134,8 @@ export function useAnalysis() {
             message: `An unexpected error occurred: ${msg}`,
           });
         }
+      } else if (typeof err === 'object' && err !== null && 'type' in err && 'message' in err) {
+        setError(err as AnalysisError);
       } else {
         setError({
           type: 'unknown',

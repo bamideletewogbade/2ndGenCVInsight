@@ -9,8 +9,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { useAnalysis, type AnalysisStatus } from '@/hooks/useAnalysis';
 import { useToast } from '@/hooks/use-toast';
-import { getApiKey, MAX_FILE_SIZE_MB } from '@/config/models';
-import { CaretDown, Key, Warning, ArrowCounterClockwise, WifiSlash, ArrowUpRight } from '@phosphor-icons/react';
+import { MAX_FILE_SIZE_MB } from '@/config/models';
+import { CaretDown, Warning, ArrowCounterClockwise, WifiSlash, ArrowUpRight } from '@phosphor-icons/react';
 
 export function UploadPage() {
   const navigate = useNavigate();
@@ -21,11 +21,6 @@ export function UploadPage() {
   const [isFileValid, setIsFileValid] = useState(false);
   const [jobDescription, setJobDescription] = useState('');
   const [jdOpen, setJdOpen] = useState(false);
-  const [apiKeyMissing, setApiKeyMissing] = useState(false);
-
-  useEffect(() => {
-    setApiKeyMissing(!getApiKey());
-  }, []);
 
   useEffect(() => {
     if (status === 'success' && result && metrics) {
@@ -70,38 +65,6 @@ export function UploadPage() {
 
   const isLoading = ['extracting', 'sending', 'analyzing', 'preparing'].includes(status);
 
-  // API key missing
-  if (apiKeyMissing && status === 'idle') {
-    return (
-      <PageTransition>
-        <div className="min-h-[80vh] flex items-center justify-center px-4">
-          <Card className="max-w-md w-full">
-            <CardHeader className="text-center">
-              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
-                <Key size={18} weight="regular" className="text-foreground/70" />
-              </div>
-              <CardTitle>API Key Not Found</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
-                Create a <code className="rounded bg-secondary px-1.5 py-0.5 text-[11px] font-mono">.env</code> file in the project root:
-              </p>
-              <div className="bg-secondary/50 rounded-[var(--radius)] p-3">
-                <code className="text-[11px] font-mono text-foreground">VITE_NVIDIA_API_KEY=your-key-here</code>
-              </div>
-              <p className="text-[13px] text-muted-foreground text-center">
-                Get a free key at{' '}
-                <a href="https://build.nvidia.com" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline inline-flex items-center gap-0.5">
-                  build.nvidia.com <ArrowUpRight size={10} weight="bold" className="mt-px" />
-                </a>
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </PageTransition>
-    );
-  }
-
   // All models failed
   if (status === 'error' && error && (error.type === 'all_models_failed' || error.type === 'json_failed')) {
     return (
@@ -132,6 +95,33 @@ export function UploadPage() {
     );
   }
 
+  // Server error
+  if (status === 'error' && error && error.type === 'server') {
+    return (
+      <PageTransition>
+        <div className="min-h-[80vh] flex items-center justify-center px-4">
+          <Card className="max-w-md w-full">
+            <CardHeader className="text-center">
+              <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
+                <Warning size={18} weight="regular" className="text-foreground/70" />
+              </div>
+              <CardTitle>Server Error</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
+              <div className="flex justify-center">
+                <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
+                  <ArrowCounterClockwise size={14} weight="bold" />
+                  Try Again
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </PageTransition>
+    );
+  }
+
   // Network error
   if (status === 'error' && error && error.type === 'network') {
     return (
@@ -142,7 +132,7 @@ export function UploadPage() {
               <div className="mx-auto w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-4">
                 <WifiSlash size={18} weight="regular" className="text-foreground/70" />
               </div>
-              <CardTitle>You Appear to Be Offline</CardTitle>
+              <CardTitle>Server Unreachable</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
