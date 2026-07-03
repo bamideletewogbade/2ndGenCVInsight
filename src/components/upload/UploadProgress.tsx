@@ -35,7 +35,7 @@ export function UploadProgress({ stage, fallbackMessage }: UploadProgressProps) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className="text-[13px] text-muted-foreground"
+              className="text-sm text-muted-foreground"
             >
               {stages[currentIndex]?.text}
             </motion.p>
@@ -49,7 +49,7 @@ export function UploadProgress({ stage, fallbackMessage }: UploadProgressProps) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="text-[12px] text-amber-600 dark:text-amber-400"
+            className="text-xs text-amber-600 dark:text-amber-400"
           >
             {fallbackMessage}
           </motion.p>

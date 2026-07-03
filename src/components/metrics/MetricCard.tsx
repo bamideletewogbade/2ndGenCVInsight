@@ -17,7 +17,7 @@ export function MetricCard({ metricKey, label, value, valueClassName = '', class
           {label}
         </span>
       </MetricTooltip>
-      <div className={`text-[13px] font-mono font-medium ${valueClassName}`}>
+      <div className={`text-sm font-mono font-medium ${valueClassName}`}>
         {value}
       </div>
     </div>

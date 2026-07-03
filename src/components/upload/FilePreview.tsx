@@ -22,10 +22,10 @@ export function FilePreview({ file, isValid, onRemove }: FilePreviewProps) {
         <FileText size={18} weight="regular" className="text-foreground/70" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-medium text-foreground truncate">{file.name}</p>
+        <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
         <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[11px] text-muted-foreground">{formatFileSize(file.size)}</span>
-          <Badge variant="outline" className="text-[9px]">{ext}</Badge>
+          <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
+          <Badge variant="outline" className="text-[10px]">{ext}</Badge>
         </div>
       </div>
       <div className="flex items-center gap-2">

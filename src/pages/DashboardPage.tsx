@@ -36,7 +36,7 @@ function EmptyState({ navigate }: { navigate: ReturnType<typeof useNavigate> }) 
             <h2 className="font-heading text-base font-semibold tracking-tight">No Analysis Data</h2>
           </CardHeader>
           <CardContent className="space-y-3">
-            <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
+            <p className="text-sm text-muted-foreground text-center leading-relaxed">
               Please upload a resume first to see your analysis.
             </p>
             <div className="flex justify-center">
@@ -64,7 +64,7 @@ function OverviewTab({ data, totalSkills }: { data: AnalysisResponse; totalSkill
         <CardContent className="py-5 sm:py-6">
           <div className="flex flex-col items-center">
             <GaugeChart score={atsScore.overall} size={110} sizeSm={140} />
-            <p className="text-[12px] sm:text-[13px] text-muted-foreground text-center mt-3 sm:mt-4 max-w-sm leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted-foreground text-center mt-3 sm:mt-4 max-w-sm leading-relaxed">
               {atsScore.notes}
             </p>
           </div>
@@ -111,7 +111,7 @@ function OverviewTab({ data, totalSkills }: { data: AnalysisResponse; totalSkill
                 {summary.careerProgression.map((item, i) => (
                   <div key={i} className="relative">
                     <div className="absolute -left-[calc(0.5rem+3px+3px)] top-[6px] w-1.5 h-1.5 rounded-full bg-foreground/20 border border-background" />
-                    <p className="text-[13px] text-foreground leading-relaxed">{item}</p>
+                    <p className="text-sm text-foreground leading-relaxed">{item}</p>
                   </div>
                 ))}
               </div>
@@ -164,8 +164,8 @@ function FeedbackTab({ data }: { data: AnalysisResponse }) {
           {breakdownItems.map((item) => (
             <div key={item.key}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[12px] text-muted-foreground">{item.label}</span>
-                <span className={`text-[12px] font-mono font-medium ${atsScoreColor(atsScore.breakdown[item.key])}`}>
+                <span className="text-xs text-muted-foreground">{item.label}</span>
+                <span className={`text-xs font-mono font-medium ${atsScoreColor(atsScore.breakdown[item.key])}`}>
                   {atsScore.breakdown[item.key]}
                 </span>
               </div>
@@ -205,7 +205,7 @@ function FeedbackTab({ data }: { data: AnalysisResponse }) {
                   <span
                     key={skill}
                     className={cn(
-                      'inline-flex items-center rounded-md px-2.5 py-1 text-[12px] font-medium',
+                      'inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium',
                       skillCategoryColors[category.category] ?? skillCategoryColors['Tools']
                     )}
                   >
@@ -234,7 +234,7 @@ function FeedbackTab({ data }: { data: AnalysisResponse }) {
               {strengths.map((s, i) => (
                 <li key={i} className="flex items-start gap-2.5">
                   <CheckCircle size={16} weight="duotone" className="text-foreground/30 mt-0.5 shrink-0" />
-                  <p className="text-[13px] text-foreground leading-relaxed">{s}</p>
+                  <p className="text-sm text-foreground leading-relaxed">{s}</p>
                 </li>
               ))}
             </ul>
@@ -255,7 +255,7 @@ function FeedbackTab({ data }: { data: AnalysisResponse }) {
               {improvements.map((item, i) => (
                 <li key={i} className="flex items-start gap-2.5">
                   <ArrowBendUpRight size={16} weight="duotone" className="text-foreground/30 mt-0.5 shrink-0" />
-                  <p className="text-[13px] text-foreground leading-relaxed">{item}</p>
+                  <p className="text-sm text-foreground leading-relaxed">{item}</p>
                 </li>
               ))}
             </ul>
@@ -305,14 +305,14 @@ function MissingSkillsSection({ missingSkills }: { missingSkills: AnalysisRespon
               {col.items.length > 0 ? (
                 <ul className="space-y-1">
                   {col.items.map((item, i) => (
-                    <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                    <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
                       <span className="w-1 h-1 rounded-full bg-foreground/30 mt-2 shrink-0" />
                       {item}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-[12px] text-muted-foreground/70">None identified</p>
+                <p className="text-xs text-muted-foreground/70">None identified</p>
               )}
             </div>
           ))}
@@ -325,7 +325,7 @@ function MissingSkillsSection({ missingSkills }: { missingSkills: AnalysisRespon
             </p>
             <ul className="space-y-1.5">
               {missingSkills.recommendations.map((r, i) => (
-                <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-foreground/30 mt-2 shrink-0" />
                   {r}
                 </li>
@@ -366,7 +366,7 @@ function InsightsTab({ metrics }: { metrics: AIRequestMetrics }) {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-heading text-[15px] font-semibold tracking-tight">Responsible AI</h3>
-                <p className="text-[12px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Privacy, fairness, transparency, and governance.
                 </p>
               </div>
@@ -398,7 +398,7 @@ function InsightsTab({ metrics }: { metrics: AIRequestMetrics }) {
                   {section.items.map((text, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
                       <CheckCircle size={13} weight="bold" className="text-foreground/30 mt-px shrink-0" />
-                      <span className="text-[12px] text-foreground leading-relaxed">{text}</span>
+                      <span className="text-xs text-foreground leading-relaxed">{text}</span>
                     </li>
                   ))}
                 </ul>
@@ -453,7 +453,7 @@ export function DashboardPage() {
               >
                 <ArrowLeft size={18} weight="bold" className="text-foreground/70" />
               </button>
-              <span className="font-heading text-[13px] font-semibold tracking-tight truncate max-w-[200px]">
+              <span className="font-heading text-sm font-semibold tracking-tight truncate max-w-[200px]">
                 {fileName ?? 'Resume Analysis'}
               </span>
               <Badge
@@ -476,7 +476,7 @@ export function DashboardPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'relative flex-1 min-h-[44px] flex items-center justify-center text-[13px] font-medium transition-colors',
+                    'relative flex-1 min-h-[44px] flex items-center justify-center text-sm font-medium transition-colors',
                     activeTab === tab.id
                       ? 'text-foreground'
                       : 'text-muted-foreground active:text-foreground/60'
@@ -540,7 +540,7 @@ export function DashboardPage() {
         <div className="fixed bottom-6 right-4 sm:hidden z-30">
           <Button
             onClick={() => navigate('/upload')}
-            className="rounded-full h-12 px-5 gap-2 shadow-lg shadow-black/20 font-heading text-[13px] font-semibold"
+            className="rounded-full h-12 px-5 gap-2 shadow-lg shadow-black/20 font-heading text-sm font-semibold"
             size="sm"
           >
             <ArrowCounterClockwise size={16} weight="bold" />

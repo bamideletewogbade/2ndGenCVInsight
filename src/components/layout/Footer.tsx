@@ -43,7 +43,7 @@ export function Footer() {
       <div className="w-full px-5 sm:px-8 lg:px-12">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <p className="text-[11px] sm:text-[12px] text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Built with care by{' '}
               <a
                 href="https://www.linkedin.com/in/bamidele-tewogbade/"
@@ -54,7 +54,7 @@ export function Footer() {
                 Bamidele Tewogbade
               </a>
             </p>
-            <p className="text-[11px] text-muted-foreground/50 mt-1">
+            <p className="text-xs text-muted-foreground/50 mt-1">
               Powered by NVIDIA NIM
             </p>
           </div>

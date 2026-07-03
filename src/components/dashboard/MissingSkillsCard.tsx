@@ -27,7 +27,7 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
         <div className="flex items-start justify-between">
           <div className="min-w-0">
             <CardTitle>Missing Skills</CardTitle>
-            <p className={`text-[12px] ${statusColor} mt-1`}>{statusText}</p>
+            <p className={`text-xs ${statusColor} mt-1`}>{statusText}</p>
           </div>
           <div className="text-right shrink-0 ml-4">
             <span className={`font-heading text-2xl font-bold tracking-tight ${statusColor}`}>
@@ -51,14 +51,14 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
               {col.items.length > 0 ? (
                 <ul className="space-y-1.5">
                   {col.items.map((item, i) => (
-                    <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                    <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
                       <span className="w-1 h-1 rounded-full bg-foreground/30 mt-2 shrink-0" />
                       {item}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-[12px] text-muted-foreground/70">None identified</p>
+                <p className="text-xs text-muted-foreground/70">None identified</p>
               )}
             </div>
           ))}
@@ -71,7 +71,7 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
             </p>
             <ul className="space-y-1.5">
               {missingSkills.recommendations.map((r, i) => (
-                <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">
+                <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-foreground/30 mt-2 shrink-0" />
                   {r}
                 </li>

@@ -33,7 +33,7 @@ export function SkillsCard({ skills }: SkillsCardProps) {
                   <span
                     key={skill}
                     className={cn(
-                      'inline-flex items-center rounded-md px-2.5 py-1 text-[12px] sm:px-2 sm:py-0.5 sm:text-[11px] font-medium',
+                      'inline-flex items-center rounded-md px-2.5 py-1 text-xs sm:px-2 sm:py-0.5 sm:text-[11px] font-medium',
                       colorClass
                     )}
                   >

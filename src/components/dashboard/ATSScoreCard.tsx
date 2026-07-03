@@ -34,7 +34,7 @@ export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
         </div>
 
         {/* Notes */}
-        <p className="text-[12px] text-muted-foreground text-center leading-relaxed">
+        <p className="text-xs text-muted-foreground text-center leading-relaxed">
           {atsScore.notes}
         </p>
 
@@ -43,8 +43,8 @@ export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
           {scores.map((s) => (
             <div key={s.key}>
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[12px] text-muted-foreground">{s.label}</span>
-                <span className={`text-[12px] font-mono font-medium ${atsScoreColor(s.value)}`}>
+                <span className="text-xs text-muted-foreground">{s.label}</span>
+                <span className={`text-xs font-mono font-medium ${atsScoreColor(s.value)}`}>
                   {s.value}
                 </span>
               </div>

@@ -78,7 +78,7 @@ export function UploadPage() {
               <CardTitle>Analysis Unavailable</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">
                 {error.message}
                 {error.type === 'json_failed' && ' The AI returned responses that couldn\'t be parsed.'}
               </p>
@@ -108,7 +108,7 @@ export function UploadPage() {
               <CardTitle>Server Error</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">{error.message}</p>
               <div className="flex justify-center">
                 <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
                   <ArrowCounterClockwise size={14} weight="bold" />
@@ -135,7 +135,7 @@ export function UploadPage() {
               <CardTitle>Server Unreachable</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">{error.message}</p>
               <div className="flex justify-center">
                 <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
                   <ArrowCounterClockwise size={14} weight="bold" />
@@ -162,7 +162,7 @@ export function UploadPage() {
               <CardTitle>Text Extraction Failed</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-[13px] text-muted-foreground text-center leading-relaxed">{error.message}</p>
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">{error.message}</p>
               <div className="flex justify-center">
                 <Button variant="outline" onClick={() => { reset(); }} className="rounded-full gap-1.5">
                   <ArrowCounterClockwise size={14} weight="bold" />
@@ -196,7 +196,7 @@ export function UploadPage() {
 
                 {file && isFileValid && (
                   <Collapsible open={jdOpen} onOpenChange={setJdOpen}>
-                    <CollapsibleTrigger className="flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 cursor-pointer">
+                    <CollapsibleTrigger className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 cursor-pointer">
                       <CaretDown size={12} weight="bold" className={`transition-transform ${jdOpen ? 'rotate-180' : ''}`} />
                       Add a target job description (optional)
                     </CollapsibleTrigger>
@@ -205,9 +205,9 @@ export function UploadPage() {
                         value={jobDescription}
                         onChange={(e) => setJobDescription(e.target.value)}
                         placeholder="Paste the job description here to get tailored missing-skills analysis..."
-                        className="w-full min-h-[120px] rounded-[var(--radius)] border border-border bg-background px-3 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 resize-y focus:outline-none focus:ring-1 focus:ring-foreground/20 transition-shadow"
+                        className="w-full min-h-[120px] rounded-[var(--radius)] border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 resize-y focus:outline-none focus:ring-1 focus:ring-foreground/20 transition-shadow"
                       />
-                      <p className="text-[11px] text-muted-foreground mt-1.5 text-right font-mono">
+                      <p className="text-xs text-muted-foreground mt-1.5 text-right font-mono">
                         {jobDescription.length.toLocaleString()} chars
                       </p>
                     </CollapsibleContent>

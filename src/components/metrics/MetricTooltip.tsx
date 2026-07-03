@@ -39,7 +39,7 @@ export function MetricTooltip({ metricKey, children, showIcon = true }: MetricTo
             className="space-y-1.5 max-w-xs"
           >
             <HoverCardArrow className="fill-popover" />
-            <p className="text-[12px] text-popover-foreground leading-relaxed">
+            <p className="text-xs text-popover-foreground leading-relaxed">
               {entry.definition}
             </p>
             {entry.whyItMatters && (

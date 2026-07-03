@@ -79,13 +79,13 @@ export function DropZone({ onFileSelect, disabled }: DropZoneProps) {
           )}
         />
         <div className="text-center">
-          <p className="text-[13px] font-medium text-foreground">
+          <p className="text-sm font-medium text-foreground">
             {isDragOver ? 'Drop here' : 'Drop your resume, or click to browse'}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-1 sm:hidden">
+          <p className="text-xs text-muted-foreground mt-1 sm:hidden">
             TAP TO BROWSE
           </p>
-          <p className="text-[11px] text-muted-foreground mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             PDF, DOCX
           </p>
         </div>

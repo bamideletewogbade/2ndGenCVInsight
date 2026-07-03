@@ -52,7 +52,7 @@ export function MetricGrid({ metrics }: MetricGridProps) {
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">
             {item.label}
           </p>
-          <p className={`text-[13px] font-mono font-medium truncate ${item.className ?? 'text-foreground'}`}>
+          <p className={`text-sm font-mono font-medium truncate ${item.className ?? 'text-foreground'}`}>
             {item.value}
           </p>
         </div>

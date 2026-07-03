@@ -10,7 +10,7 @@ export function ImprovementsCard({ improvements }: ImprovementsCardProps) {
     <Card className="bg-secondary/20">
       <CardHeader>
         <CardTitle>Improvements</CardTitle>
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {improvements.length} {improvements.length === 1 ? 'improvement' : 'improvements'} suggested
         </p>
       </CardHeader>
@@ -26,7 +26,7 @@ export function ImprovementsCard({ improvements }: ImprovementsCardProps) {
                 weight="duotone"
                 className="text-foreground/30 mt-px shrink-0"
               />
-              <p className="text-[13px] text-foreground leading-relaxed">{item}</p>
+              <p className="text-sm text-foreground leading-relaxed">{item}</p>
             </li>
           ))}
         </ul>

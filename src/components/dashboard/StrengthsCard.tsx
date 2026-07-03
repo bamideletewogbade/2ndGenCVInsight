@@ -10,7 +10,7 @@ export function StrengthsCard({ strengths }: StrengthsCardProps) {
     <Card>
       <CardHeader>
         <CardTitle>Strengths</CardTitle>
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {strengths.length} {strengths.length === 1 ? 'strength' : 'strengths'} identified
         </p>
       </CardHeader>
@@ -26,7 +26,7 @@ export function StrengthsCard({ strengths }: StrengthsCardProps) {
                 weight="duotone"
                 className="text-foreground/30 mt-px shrink-0"
               />
-              <p className="text-[13px] text-foreground leading-relaxed">{strength}</p>
+              <p className="text-sm text-foreground leading-relaxed">{strength}</p>
             </li>
           ))}
         </ul>

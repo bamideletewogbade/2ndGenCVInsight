@@ -81,7 +81,7 @@ export function ResponsibleAICard() {
                   {section.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
                       <Check size={14} weight="bold" className="text-foreground/30 mt-px shrink-0" />
-                      <span className="text-[13px] text-foreground leading-relaxed">{item.text}</span>
+                      <span className="text-sm text-foreground leading-relaxed">{item.text}</span>
                     </li>
                   ))}
                 </ul>

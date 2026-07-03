@@ -47,7 +47,7 @@ export function LandingPage() {
         {/* How It Works — full width */}
         <section className="w-full px-5 sm:px-8 lg:px-12 pb-16 sm:pb-20">
           <div className="border-t border-border/40 pt-12">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground mb-10">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground mb-10">
               How It Works
             </p>
             <div className="flex flex-col sm:flex-row sm:items-start gap-0">
@@ -64,15 +64,15 @@ export function LandingPage() {
                     </>
                   )}
                   <div className="flex sm:flex-col gap-4 sm:gap-0 sm:items-center sm:text-center">
-                    <span className="text-[11px] font-mono text-muted-foreground shrink-0">
+                    <span className="text-xs font-mono text-muted-foreground shrink-0">
                       {step.number}
                     </span>
                     <div className="text-foreground/70 shrink-0">{step.icon}</div>
                     <div className="flex-1 sm:mt-3">
-                      <h3 className="font-heading text-sm font-semibold tracking-tight text-foreground">
+                      <h3 className="font-heading text-base font-semibold tracking-tight text-foreground">
                         {step.title}
                       </h3>
-                      <p className="text-[13px] text-muted-foreground leading-relaxed mt-1">
+                      <p className="text-sm text-muted-foreground leading-relaxed mt-1">
                         {step.desc}
                       </p>
                     </div>
@@ -86,7 +86,7 @@ export function LandingPage() {
         {/* Features — full width */}
         <section className="w-full px-5 sm:px-8 lg:px-12 pb-16 sm:pb-20">
           <div className="border-t border-border/40 pt-12">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground mb-8">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground mb-8">
               What It Does
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-border/40">
@@ -102,7 +102,7 @@ export function LandingPage() {
         {/* Bottom CTA */}
         <section className="w-full px-5 sm:px-8 lg:px-12 pb-16 sm:pb-20">
           <div className="border-t border-border/40 pt-14 sm:pt-20 flex flex-col items-center text-center">
-            <h2 className="font-heading text-[clamp(1.25rem,4vw,1.75rem)] font-bold leading-tight tracking-[-0.02em] text-foreground max-w-md">
+            <h2 className="font-heading text-[clamp(1.4rem,4vw,2rem)] font-bold leading-tight tracking-[-0.02em] text-foreground max-w-md">
               Ready to see how your resume scores?
             </h2>
             <div className="mt-6">

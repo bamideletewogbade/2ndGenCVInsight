@@ -40,7 +40,7 @@ export function AnalysisLoader({ stage, fallbackMessage }: AnalysisLoaderProps) 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.25 }}
-                className="text-[13px] text-foreground font-medium"
+                className="text-sm text-foreground font-medium"
               >
                 {stages[currentIndex]?.text}
               </motion.p>
@@ -55,7 +55,7 @@ export function AnalysisLoader({ stage, fallbackMessage }: AnalysisLoaderProps) 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[12px] text-amber-600 dark:text-amber-400"
+              className="text-xs text-amber-600 dark:text-amber-400"
             >
               {fallbackMessage}
             </motion.p>

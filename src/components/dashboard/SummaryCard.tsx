@@ -15,7 +15,7 @@ export function SummaryCard({ summary, totalSkills }: SummaryCardProps) {
       </CardHeader>
       <CardContent className="space-y-5">
         {/* Overview text */}
-        <p className="text-[14px] sm:text-[13px] text-foreground leading-relaxed">
+        <p className="text-sm text-foreground leading-relaxed">
           {summary.overview}
         </p>
 
@@ -58,7 +58,7 @@ export function SummaryCard({ summary, totalSkills }: SummaryCardProps) {
                 <div key={i} className="relative">
                   {/* Timeline dot */}
                   <div className="absolute -left-[calc(0.5rem+5px+4px)] top-[6px] w-2 h-2 rounded-full bg-foreground/20 border border-background" />
-                  <p className="text-[13px] text-foreground leading-relaxed">{item}</p>
+                  <p className="text-sm text-foreground leading-relaxed">{item}</p>
                 </div>
               ))}
             </div>
