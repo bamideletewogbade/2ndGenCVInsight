@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { ParticleBackground } from '@/components/effects/ParticleBackground';
+import { CursorFollower } from '@/components/effects/CursorFollower';
 import { LandingPage } from '@/pages/LandingPage';
 import { UploadPage } from '@/pages/UploadPage';
 import { DashboardPage } from '@/pages/DashboardPage';
@@ -26,12 +28,16 @@ function AppLayout() {
   const { isDark, toggle } = useDarkMode();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar isDark={isDark} onToggleDark={toggle} />
-      <main className="flex-1">
-        <AnimatedRoutes />
-      </main>
-      <Footer />
+    <div className="min-h-screen flex flex-col relative">
+      <ParticleBackground />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar isDark={isDark} onToggleDark={toggle} />
+        <main className="flex-1">
+          <AnimatedRoutes />
+        </main>
+        <Footer />
+      </div>
+      <CursorFollower />
       <Toaster />
     </div>
   );

@@ -3,13 +3,31 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, Float, Boolean, JSON
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, Float, Boolean, JSON, make_url
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from config import DATABASE_URL
 
-engine = create_async_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
+# asyncpg doesn't support "sslmode" or "channel_binding" (psycopg2/libpq params).
+# Strip them and pass ssl via connect_args instead.
+_db_url = make_url(DATABASE_URL)
+_ssl_require = False
+_query_dict = dict(_db_url.query)
+if "sslmode" in _query_dict:
+    _ssl_require = _query_dict["sslmode"] in ("require", "verify-full")
+    del _query_dict["sslmode"]
+if "channel_binding" in _query_dict:
+    del _query_dict["channel_binding"]
+_db_url = _db_url._replace(query=_query_dict)
+
+_connect_args = {"ssl": _ssl_require} if _ssl_require else {}
+engine = create_async_engine(
+    str(_db_url),
+    echo=False,
+    pool_pre_ping=True,
+    connect_args=_connect_args,
+)
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
@@ -63,9 +81,14 @@ class AnalysisMetric(Base):
 
 
 async def init_db() -> None:
-    """Create all tables if they don't exist."""
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    """Create all tables if they don't exist. Fails silently if DB is unreachable."""
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("[DB] Tables ready.")
+    except Exception as exc:
+        print(f"[DB] Warning: could not connect to database — {exc}")
+        print("[DB] The app will work, but analyses won't be persisted.")
 
 
 async def get_session() -> AsyncSession:

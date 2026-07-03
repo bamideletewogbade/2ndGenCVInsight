@@ -95,3 +95,19 @@ html {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Custom cursor */
+body.cursor-active,
+body.cursor-active * {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  body.cursor-active,
+  body.cursor-active * {
+    cursor: auto !important;
+  }
+  .cursor-follower {
+    display: none !important;
+  }
+}

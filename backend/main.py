@@ -126,40 +126,44 @@ async def analyze_resume(
     # ── Build metrics ──────────────────────────────────────────────────
     metrics = ai_client.build_metrics(result)
 
-    # ── Persist to DB ──────────────────────────────────────────────────
-    analysis_id = str(uuid.uuid4())
+    # ── Persist to DB (graceful — non-blocking if DB is down) ──────────
+    try:
+        analysis_id = str(uuid.uuid4())
 
-    analysis_record = db.Analysis(
-        id=analysis_id,
-        filename=file.filename or "unknown",
-        file_type=ext,
-        resume_text=resume_text,
-        job_description=job_description,
-        analysis_json=result["parsed"],
-    )
-    session.add(analysis_record)
+        analysis_record = db.Analysis(
+            id=analysis_id,
+            filename=file.filename or "unknown",
+            file_type=ext,
+            resume_text=resume_text,
+            job_description=job_description,
+            analysis_json=result["parsed"],
+        )
+        session.add(analysis_record)
 
-    metric_record = db.AnalysisMetric(
-        analysis_id=analysis_id,
-        request_id=metrics["request_id"],
-        timestamp=metrics["timestamp"],
-        model_used=metrics["model_used"],
-        fallback_triggered=metrics["fallback_triggered"],
-        fallback_reason=metrics["fallback_reason"],
-        prompt_tokens=metrics["prompt_tokens"],
-        completion_tokens=metrics["completion_tokens"],
-        total_tokens=metrics["total_tokens"],
-        estimated_cost_usd=metrics["estimated_cost_usd"],
-        latency_ms=metrics["latency_ms"],
-        time_to_first_token_ms=metrics["time_to_first_token_ms"],
-        response_status=metrics["response_status"],
-        retry_count=metrics["retry_count"],
-        prompt_version=metrics["prompt_version"],
-        prompt_template_name=metrics["prompt_template_name"],
-        json_validation_status=metrics["json_validation_status"],
-    )
-    session.add(metric_record)
-    await session.flush()
+        metric_record = db.AnalysisMetric(
+            analysis_id=analysis_id,
+            request_id=metrics["request_id"],
+            timestamp=metrics["timestamp"],
+            model_used=metrics["model_used"],
+            fallback_triggered=metrics["fallback_triggered"],
+            fallback_reason=metrics["fallback_reason"],
+            prompt_tokens=metrics["prompt_tokens"],
+            completion_tokens=metrics["completion_tokens"],
+            total_tokens=metrics["total_tokens"],
+            estimated_cost_usd=metrics["estimated_cost_usd"],
+            latency_ms=metrics["latency_ms"],
+            time_to_first_token_ms=metrics["time_to_first_token_ms"],
+            response_status=metrics["response_status"],
+            retry_count=metrics["retry_count"],
+            prompt_version=metrics["prompt_version"],
+            prompt_template_name=metrics["prompt_template_name"],
+            json_validation_status=metrics["json_validation_status"],
+        )
+        session.add(metric_record)
+        await session.flush()
+    except Exception:
+        # DB write failed — not critical, analysis is still returned
+        pass
 
     # ── Build response ─────────────────────────────────────────────────
     analysis_out = AnalysisResponse.model_validate(result["parsed"])
