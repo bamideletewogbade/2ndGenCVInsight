@@ -4,7 +4,7 @@ import { FeatureCard } from '@/components/landing/FeatureCard';
 import { PageTransition } from '@/components/layout/PageTransition';
 import {
   Brain, ChartBar, Eye, CloudArrowUp, ArrowsClockwise,
-  ArrowUpRight,
+  ArrowUpRight, LinkedinLogo, XLogo, InstagramLogo,
 } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 
