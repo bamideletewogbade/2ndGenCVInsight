@@ -10,31 +10,30 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
   const isHighMatch = missingSkills.matchPercentage >= 80;
   const isLowMatch = missingSkills.matchPercentage < 50;
 
+  const statusColor = isHighMatch
+    ? 'text-green-700 dark:text-green-400'
+    : isLowMatch
+      ? 'text-red-700 dark:text-red-400'
+      : 'text-amber-700 dark:text-amber-400';
+
+  const statusText = isHighMatch
+    ? 'Strong match — your resume covers most required skills.'
+    : isLowMatch
+      ? 'Significant gaps. Consider addressing these to improve your match.'
+      : 'Moderate match. Some skills gaps to address.';
+
   return (
-    <Card className="md:col-span-2">
+    <Card>
       <CardHeader>
         <div className="flex items-start justify-between">
-          <div>
+          <div className="min-w-0">
             <CardTitle>Missing Skills</CardTitle>
-            {isHighMatch && (
-              <p className="text-[12px] text-green-700 dark:text-green-400 mt-1">
-                Strong match — your resume covers most required skills.
-              </p>
-            )}
-            {isLowMatch && (
-              <p className="text-[12px] text-red-700 dark:text-red-400 mt-1">
-                Significant gaps. Consider addressing these to improve your match.
-              </p>
-            )}
-            {!isHighMatch && !isLowMatch && (
-              <p className="text-[12px] text-amber-700 dark:text-amber-400 mt-1">
-                Moderate match. Some skills gaps to address.
-              </p>
-            )}
+            <p className={`text-[12px] ${statusColor} mt-1`}>{statusText}</p>
           </div>
+          {/* Match % — inline on desktop, hidden on mobile (shown in banner below) */}
           <MetricTooltip metricKey="match-percentage">
-            <div className="text-right shrink-0 ml-4">
-              <span className={`font-heading text-2xl font-bold tracking-tight ${isHighMatch ? 'text-green-600 dark:text-green-400' : isLowMatch ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`}>
+            <div className="text-right shrink-0 ml-4 hidden sm:block">
+              <span className={`font-heading text-2xl font-bold tracking-tight ${statusColor}`}>
                 {missingSkills.matchPercentage}%
               </span>
             </div>
@@ -42,14 +41,26 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        {/* Match % banner — mobile only, full width */}
+        <div className="sm:hidden flex items-center justify-between py-3 px-4 -mx-5 -mt-4 mb-4 bg-secondary/60 border-b border-border/40">
+          <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-medium">Match</span>
+          <MetricTooltip metricKey="match-percentage">
+            <span className={`font-heading text-xl font-bold tracking-tight ${statusColor}`}>
+              {missingSkills.matchPercentage}%
+            </span>
+          </MetricTooltip>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 mb-0 sm:mb-6">
           {([
             { title: 'Technologies', items: missingSkills.technologies },
             { title: 'Certifications', items: missingSkills.certifications },
             { title: 'Soft Skills', items: missingSkills.softSkills },
           ] as const).map((col) => (
             <div key={col.title}>
-              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">{col.title}</p>
+              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">
+                {col.title}
+              </p>
               {col.items.length > 0 ? (
                 <ul className="space-y-1.5">
                   {col.items.map((item, i) => (
@@ -65,9 +76,12 @@ export function MissingSkillsCard({ missingSkills }: MissingSkillsCardProps) {
             </div>
           ))}
         </div>
+
         {missingSkills.recommendations.length > 0 && (
-          <div>
-            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">Recommendations</p>
+          <div className="mt-4">
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2">
+              Recommendations
+            </p>
             <ul className="space-y-1.5">
               {missingSkills.recommendations.map((r, i) => (
                 <li key={i} className="text-[13px] text-foreground leading-relaxed flex items-start gap-2">

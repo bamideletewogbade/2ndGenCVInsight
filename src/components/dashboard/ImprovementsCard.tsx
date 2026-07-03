@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { ArrowBendUpRight } from '@phosphor-icons/react';
 
 interface ImprovementsCardProps {
   improvements: string[];
@@ -6,19 +7,29 @@ interface ImprovementsCardProps {
 
 export function ImprovementsCard({ improvements }: ImprovementsCardProps) {
   return (
-    <Card>
+    <Card className="bg-secondary/20">
       <CardHeader>
         <CardTitle>Improvements</CardTitle>
+        <p className="text-[11px] text-muted-foreground">
+          {improvements.length} {improvements.length === 1 ? 'improvement' : 'improvements'} suggested
+        </p>
       </CardHeader>
       <CardContent>
-        <ol className="space-y-3">
+        <ul className="space-y-0">
           {improvements.map((item, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span className="text-[10px] font-mono text-muted-foreground mt-px">{String(i + 1).padStart(2, '0')}</span>
+            <li
+              key={i}
+              className="flex items-start gap-3 border-l-2 border-foreground/8 pl-4 py-2"
+            >
+              <ArrowBendUpRight
+                size={18}
+                weight="duotone"
+                className="text-foreground/30 mt-px shrink-0"
+              />
               <p className="text-[13px] text-foreground leading-relaxed">{item}</p>
             </li>
           ))}
-        </ol>
+        </ul>
       </CardContent>
     </Card>
   );

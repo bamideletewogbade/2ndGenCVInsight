@@ -1,32 +1,27 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { GaugeChart } from '@/components/metrics/GaugeChart';
 import { MetricTooltip } from '@/components/metrics/MetricTooltip';
 import { atsScoreColor } from '@/config/ui';
-import type { ATSScore } from '@/types/analysis';
+import type { ATSScore, ATSScoreBreakdown } from '@/types/analysis';
 
 interface ATSScoreCardProps {
   atsScore: ATSScore;
 }
 
-const subScores: { key: string; label: string }[] = [
-  { key: 'ats-formatting', label: 'Formatting' },
-  { key: 'ats-keywords', label: 'Keywords' },
-  { key: 'ats-readability', label: 'Readability' },
-  { key: 'ats-experience', label: 'Experience' },
-  { key: 'ats-skills', label: 'Skills' },
-  { key: 'ats-consistency', label: 'Consistency' },
+const breakdownItems: { key: keyof ATSScoreBreakdown; label: string }[] = [
+  { key: 'formatting', label: 'Formatting' },
+  { key: 'keywords', label: 'Keywords' },
+  { key: 'readability', label: 'Readability' },
+  { key: 'experience', label: 'Experience' },
+  { key: 'skills', label: 'Skills' },
+  { key: 'consistency', label: 'Consistency' },
 ];
 
 export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
-  const breakdownValues = [
-    atsScore.breakdown.formatting,
-    atsScore.breakdown.keywords,
-    atsScore.breakdown.readability,
-    atsScore.breakdown.experience,
-    atsScore.breakdown.skills,
-    atsScore.breakdown.consistency,
-  ];
+  const scores = breakdownItems.map((item) => ({
+    ...item,
+    value: atsScore.breakdown[item.key],
+  }));
 
   return (
     <Card>
@@ -34,25 +29,39 @@ export function ATSScoreCard({ atsScore }: ATSScoreCardProps) {
         <CardTitle>ATS Score</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
+        {/* Gauge — larger on desktop */}
         <div className="flex justify-center">
-          <GaugeChart score={atsScore.overall} />
+          <GaugeChart score={atsScore.overall} size={130} sizeSm={160} />
         </div>
-        <p className="text-[12px] text-muted-foreground text-center leading-relaxed">{atsScore.notes}</p>
-        <div className="space-y-3">
-          {subScores.map((sub, i) => (
-            <div key={sub.key}>
-              <MetricTooltip metricKey={sub.key}>
+
+        {/* Notes */}
+        <p className="text-[12px] text-muted-foreground text-center leading-relaxed">
+          {atsScore.notes}
+        </p>
+
+        {/* Breakdown — horizontal bar chart layout */}
+        <div className="grid grid-cols-2 gap-x-5 gap-y-3 sm:grid-cols-1">
+          {scores.map((s) => (
+            <MetricTooltip key={s.key} metricKey={`ats-${s.key}`}>
+              <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] text-muted-foreground">{sub.label}</span>
-                  <span className={`text-[11px] font-mono font-medium ${atsScoreColor(breakdownValues[i])}`}>
-                    {breakdownValues[i]}
+                  <span className="text-[12px] text-muted-foreground">{s.label}</span>
+                  <span className={`text-[12px] font-mono font-medium ${atsScoreColor(s.value)}`}>
+                    {s.value}
                   </span>
                 </div>
-              </MetricTooltip>
-              <Progress value={breakdownValues[i]} />
-            </div>
+                <div className="relative h-1 w-full overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="absolute inset-y-0 left-0 rounded-full bg-foreground transition-all duration-700 ease-out"
+                    style={{ width: `${s.value}%` }}
+                  />
+                </div>
+              </div>
+            </MetricTooltip>
           ))}
         </div>
+
+        {/* Disclaimer */}
         <p className="text-[10px] text-muted-foreground/70 text-center leading-relaxed">
           Estimated score for educational purposes — not an official ATS assessment.
         </p>

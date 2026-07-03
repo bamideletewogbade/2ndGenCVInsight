@@ -18,14 +18,16 @@ export function AnalysisLoader({ stage, fallbackMessage }: AnalysisLoaderProps) 
   return (
     <div className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center">
       <div className="flex flex-col items-center gap-8">
-        {/* Thin progress bar */}
-        <div className="relative h-[2px] w-56 bg-secondary rounded-full overflow-hidden">
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-foreground rounded-full"
-            initial={{ width: '0%' }}
-            animate={{ width: `${((currentIndex + 1) / stages.length) * 100}%` }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          />
+        {/* Thin progress bar with breathing wrapper */}
+        <div className="animate-pulse">
+          <div className="relative h-[2px] w-40 sm:w-56 bg-secondary rounded-full overflow-hidden">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-foreground rounded-full"
+              initial={{ width: '0%' }}
+              animate={{ width: `${((currentIndex + 1) / stages.length) * 100}%` }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            />
+          </div>
         </div>
 
         {/* Stage text */}
@@ -61,12 +63,12 @@ export function AnalysisLoader({ stage, fallbackMessage }: AnalysisLoaderProps) 
         </AnimatePresence>
 
         {/* Skeleton preview */}
-        <div className="mt-4 w-full max-w-md grid grid-cols-3 gap-2 opacity-8">
-          <div className="col-span-2 h-24 rounded-[var(--radius)] bg-secondary animate-pulse" />
-          <div className="h-24 rounded-[var(--radius)] bg-secondary animate-pulse" />
-          <div className="h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
-          <div className="h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
-          <div className="h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
+        <div className="mt-4 w-full max-w-md grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2 opacity-8">
+          <div className="col-span-2 h-16 sm:h-24 rounded-[var(--radius)] bg-secondary animate-pulse" />
+          <div className="h-16 sm:h-24 rounded-[var(--radius)] bg-secondary animate-pulse" />
+          <div className="h-14 sm:h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
+          <div className="h-14 sm:h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
+          <div className="hidden sm:block h-20 rounded-[var(--radius)] bg-secondary animate-pulse" />
         </div>
       </div>
     </div>

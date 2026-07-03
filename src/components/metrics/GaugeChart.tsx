@@ -1,23 +1,36 @@
+import { useState, useEffect } from 'react';
 import { atsStrokeColor } from '@/config/ui';
 import { MetricTooltip } from './MetricTooltip';
 
 interface GaugeChartProps {
   score: number;
   size?: number;
+  sizeSm?: number;
 }
 
-export function GaugeChart({ score, size = 130 }: GaugeChartProps) {
-  const radius = (size - 20) / 2;
+export function GaugeChart({ score, size = 130, sizeSm }: GaugeChartProps) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 640px)');
+    setIsDesktop(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  const currentSize = (isDesktop && sizeSm != null) ? sizeSm : size;
+  const radius = (currentSize - 20) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = (score / 100) * circumference;
   const strokeColor = atsStrokeColor(score);
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      <svg width={size} height={size} className="-rotate-90">
+      <svg width={currentSize} height={currentSize} className="-rotate-90">
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={currentSize / 2}
+          cy={currentSize / 2}
           r={radius}
           stroke="currentColor"
           strokeWidth="6"
@@ -25,8 +38,8 @@ export function GaugeChart({ score, size = 130 }: GaugeChartProps) {
           className="text-secondary"
         />
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={currentSize / 2}
+          cy={currentSize / 2}
           r={radius}
           stroke={strokeColor}
           strokeWidth="6"
@@ -39,10 +52,15 @@ export function GaugeChart({ score, size = 130 }: GaugeChartProps) {
       </svg>
       <MetricTooltip metricKey="ats-overall">
         <div className="absolute flex flex-col items-center justify-center">
-          <span className="font-heading text-3xl font-bold tracking-tight" style={{ color: strokeColor }}>
+          <span
+            className="font-heading text-2xl sm:text-3xl font-bold tracking-tight"
+            style={{ color: strokeColor }}
+          >
             {score}
           </span>
-          <span className="text-[10px] text-muted-foreground tracking-wide uppercase mt-0.5">score</span>
+          <span className="text-[9px] sm:text-[10px] text-muted-foreground tracking-wide uppercase mt-0.5">
+            score
+          </span>
         </div>
       </MetricTooltip>
     </div>

@@ -1,7 +1,6 @@
 import type { AIRequestMetrics } from '@/types/metrics';
 import { MetricCard } from './MetricCard';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 
 interface MetricGridProps {
   metrics: AIRequestMetrics;
@@ -83,19 +82,20 @@ export function MetricGrid({ metrics }: MetricGridProps) {
         {metrics.retryCount}
       </MetricCard>
 
-      <MetricCard metricKey="request-id" label="Request ID">
+      {/* Hidden on mobile — less important for quick glance */}
+      <MetricCard metricKey="request-id" label="Request ID" className="hidden sm:block">
         <span className="text-[11px] font-mono text-muted-foreground">{metrics.requestId.slice(0, 16)}...</span>
       </MetricCard>
 
-      <MetricCard metricKey="timestamp" label="Timestamp">
+      <MetricCard metricKey="timestamp" label="Timestamp" className="hidden sm:block">
         <span className="text-[11px] font-mono text-muted-foreground">{new Date(metrics.timestamp).toLocaleTimeString()}</span>
       </MetricCard>
 
-      <MetricCard metricKey="prompt-version" label="Prompt Ver.">
+      <MetricCard metricKey="prompt-version" label="Prompt Ver." className="hidden sm:block">
         <Badge variant="outline">{metrics.promptVersion}</Badge>
       </MetricCard>
 
-      <MetricCard metricKey="prompt-template-name" label="Template">
+      <MetricCard metricKey="prompt-template-name" label="Template" className="hidden sm:block">
         <span className="text-[11px] font-mono text-muted-foreground">{metrics.promptTemplateName}</span>
       </MetricCard>
     </div>

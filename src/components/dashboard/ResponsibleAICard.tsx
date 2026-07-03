@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { MetricTooltip } from '@/components/metrics/MetricTooltip';
-import { Check } from '@phosphor-icons/react';
+import { Check, CaretDown } from '@phosphor-icons/react';
+import { cn } from '@/lib/utils';
 
 interface ChecklistItem {
   key: string;
@@ -43,43 +46,67 @@ const sections: { title: string; items: ChecklistItem[] }[] = [
 ];
 
 export function ResponsibleAICard() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Responsible AI</CardTitle>
-        <CardDescription>How this application handles privacy, fairness, transparency, and governance.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-0">
-        {sections.map((section, si) => (
-          <div key={section.title}>
-            {si > 0 && <Separator className="my-5" />}
-            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">{section.title}</p>
-            <div className="space-y-2.5">
-              {section.items.map((item) => (
-                <div key={item.key} className="flex items-start gap-3">
-                  <Check size={14} weight="bold" className="text-foreground/40 mt-px shrink-0" />
-                  <MetricTooltip metricKey={item.key}>
-                    <span className="text-[13px] text-foreground leading-relaxed">{item.text}</span>
-                  </MetricTooltip>
-                </div>
-              ))}
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <Card>
+        <CollapsibleTrigger asChild>
+          <CardHeader className="cursor-pointer select-none hover:bg-secondary/30 transition-colors rounded-t-[var(--radius)]">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-[15px]">Responsible AI</CardTitle>
+                <CardDescription className="text-[12px] sm:text-[13px]">
+                  How this application handles privacy, fairness, transparency, and governance.
+                </CardDescription>
+              </div>
+              <CaretDown
+                size={16}
+                weight="bold"
+                className={cn(
+                  'text-muted-foreground transition-transform duration-200 shrink-0 ml-3',
+                  open && 'rotate-180'
+                )}
+              />
             </div>
-          </div>
-        ))}
+          </CardHeader>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CardContent className="space-y-0">
+            {sections.map((section, si) => (
+              <div key={section.title}>
+                {si > 0 && <Separator className="my-4 sm:my-5" />}
+                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-2 sm:mb-3">
+                  {section.title}
+                </p>
+                <div className="space-y-2 sm:space-y-2.5">
+                  {section.items.map((item) => (
+                    <div key={item.key} className="flex items-start gap-3">
+                      <Check size={14} weight="bold" className="text-foreground/40 mt-px shrink-0" />
+                      <MetricTooltip metricKey={item.key}>
+                        <span className="text-[12px] sm:text-[13px] text-foreground leading-relaxed">{item.text}</span>
+                      </MetricTooltip>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
 
-        <Separator className="my-5" />
+            <Separator className="my-4 sm:my-5" />
 
-        <div className="flex items-center justify-between">
-          <MetricTooltip metricKey="risk-assessment">
-            <span className="text-[11px] text-muted-foreground">Risk Level</span>
-          </MetricTooltip>
-          <Badge variant="success">Low</Badge>
-        </div>
+            <div className="flex items-center justify-between">
+              <MetricTooltip metricKey="risk-assessment">
+                <span className="text-[11px] text-muted-foreground">Risk Level</span>
+              </MetricTooltip>
+              <Badge variant="success">Low</Badge>
+            </div>
 
-        <p className="text-[10px] text-muted-foreground/60 mt-3 leading-relaxed">
-          These represent the design-time safeguards built into this application.
-        </p>
-      </CardContent>
-    </Card>
+            <p className="text-[10px] text-muted-foreground/60 mt-3 leading-relaxed">
+              These represent the design-time safeguards built into this application.
+            </p>
+          </CardContent>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 }

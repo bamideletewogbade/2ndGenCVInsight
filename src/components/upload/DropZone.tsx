@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { CloudArrowUp } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface DropZoneProps {
   onFileSelect: (file: File) => void;
@@ -56,17 +57,37 @@ export function DropZone({ onFileSelect, disabled }: DropZoneProps) {
         }
       `}
     >
-      <div className="flex flex-col items-center gap-4 py-16">
+      {/* Pulsing border glow on drag over */}
+      {isDragOver && (
+        <div className="absolute inset-0 rounded-[var(--radius)] border-2 border-foreground/30 animate-pulse pointer-events-none" />
+      )}
+      <div className="flex flex-col items-center gap-4 py-10 sm:py-16">
+        <CloudArrowUp
+          size={24}
+          weight={isDragOver ? 'fill' : 'regular'}
+          className={cn(
+            'sm:hidden transition-colors',
+            isDragOver ? 'text-foreground' : 'text-muted-foreground/50'
+          )}
+        />
         <CloudArrowUp
           size={32}
           weight={isDragOver ? 'fill' : 'regular'}
-          className={`transition-colors ${isDragOver ? 'text-foreground' : 'text-muted-foreground/50'}`}
+          className={cn(
+            'hidden sm:block transition-colors',
+            isDragOver ? 'text-foreground' : 'text-muted-foreground/50'
+          )}
         />
         <div className="text-center">
           <p className="text-[13px] font-medium text-foreground">
             {isDragOver ? 'Drop here' : 'Drop your resume, or click to browse'}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-1">PDF, DOCX</p>
+          <p className="text-[11px] text-muted-foreground mt-1 sm:hidden">
+            TAP TO BROWSE
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            PDF, DOCX
+          </p>
         </div>
       </div>
     </motion.div>
