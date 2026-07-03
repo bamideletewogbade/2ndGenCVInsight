@@ -1,32 +1,28 @@
 """SQLAlchemy async database setup, models, and session management."""
 
+import re
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, Float, Boolean, JSON, make_url
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, Float, Boolean, JSON
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from config import DATABASE_URL
 
-# asyncpg doesn't support "sslmode" or "channel_binding" (psycopg2/libpq params).
-# Strip them and pass ssl via connect_args instead.
-_db_url = make_url(DATABASE_URL)
-_ssl_require = False
-_query_dict = dict(_db_url.query)
-if "sslmode" in _query_dict:
-    _ssl_require = _query_dict["sslmode"] in ("require", "verify-full")
-    del _query_dict["sslmode"]
-if "channel_binding" in _query_dict:
-    del _query_dict["channel_binding"]
-_db_url = _db_url._replace(query=_query_dict)
+# Build a clean asyncpg-compatible URL.
+# asyncpg doesn't understand "sslmode" or "channel_binding" (psycopg2 params).
+# We strip them and pass ssl via connect_args instead.
+_clean_url = DATABASE_URL
+for param in ("sslmode", "channel_binding"):
+    _clean_url = re.sub(rf"[?&]{re.escape(param)}=[^&]*", lambda m: "?" if m.group().startswith("?") else "&", _clean_url)
+    _clean_url = _clean_url.rstrip("?&")
 
-_connect_args = {"ssl": _ssl_require} if _ssl_require else {}
 engine = create_async_engine(
-    str(_db_url),
+    _clean_url,
     echo=False,
     pool_pre_ping=True,
-    connect_args=_connect_args,
+    connect_args={"ssl": True},  # Neon and most cloud Postgres require SSL
 )
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
