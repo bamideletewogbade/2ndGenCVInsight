@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Hero } from '@/components/landing/Hero';
 import { FeatureCard } from '@/components/landing/FeatureCard';
 import { PageTransition } from '@/components/layout/PageTransition';
-import { Brain, ChartBar, Eye, CloudArrowUp, ArrowsClockwise } from '@phosphor-icons/react';
+import { Brain, ChartBar, Eye, CloudArrowUp, ArrowsClockwise, ArrowUpRight } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 
 const features = [
