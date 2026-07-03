@@ -58,32 +58,32 @@ function OverviewTab({ data, totalSkills }: { data: AnalysisResponse; totalSkill
   const strokeColor = atsStrokeColor(atsScore.overall);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Hero: ATS Score + Quick Stats */}
       <Card>
-        <CardContent className="pt-6 pb-6">
+        <CardContent className="py-5 sm:py-6">
           <div className="flex flex-col items-center">
-            <GaugeChart score={atsScore.overall} size={120} sizeSm={150} />
-            <p className="text-[13px] text-muted-foreground text-center mt-4 max-w-sm leading-relaxed">
+            <GaugeChart score={atsScore.overall} size={110} sizeSm={140} />
+            <p className="text-[12px] sm:text-[13px] text-muted-foreground text-center mt-3 sm:mt-4 max-w-sm leading-relaxed">
               {atsScore.notes}
             </p>
           </div>
 
           {/* Quick stats */}
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            <div className="rounded-lg bg-secondary/50 py-3 px-2 text-center">
-              <p className="font-heading text-lg font-bold tracking-tight">{summary.yearsOfExperience}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Years Exp.</p>
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mt-5 sm:mt-6">
+            <div className="rounded-lg bg-secondary/50 py-2.5 sm:py-3 px-2 text-center">
+              <p className="font-heading text-base sm:text-lg font-bold tracking-tight">{summary.yearsOfExperience}</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Years Exp.</p>
             </div>
-            <div className="rounded-lg bg-secondary/50 py-3 px-2 text-center">
-              <p className="font-heading text-lg font-bold tracking-tight">{totalSkills}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Skills</p>
+            <div className="rounded-lg bg-secondary/50 py-2.5 sm:py-3 px-2 text-center">
+              <p className="font-heading text-base sm:text-lg font-bold tracking-tight">{totalSkills}</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Skills</p>
             </div>
-            <div className="rounded-lg bg-secondary/50 py-3 px-2 text-center">
-              <p className="font-heading text-lg font-bold tracking-tight" style={{ color: strokeColor }}>
+            <div className="rounded-lg bg-secondary/50 py-2.5 sm:py-3 px-2 text-center">
+              <p className="font-heading text-base sm:text-lg font-bold tracking-tight" style={{ color: strokeColor }}>
                 {atsScore.overall}
               </p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">ATS Score</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">ATS Score</p>
             </div>
           </div>
         </CardContent>
@@ -154,7 +154,7 @@ function FeedbackTab({ data }: { data: AnalysisResponse }) {
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* ATS Breakdown — compact bars */}
       <Card>
         <CardHeader>
@@ -343,7 +343,7 @@ function InsightsTab({ metrics }: { metrics: AIRequestMetrics }) {
   const [aiOpen, setAiOpen] = useState(true);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Request Metrics */}
       <Card>
         <CardHeader>
@@ -442,7 +442,7 @@ export function DashboardPage() {
     <PageTransition>
       <div className="min-h-screen bg-background">
         {/* Sticky Header */}
-        <header className="sticky top-0 z-20 bg-background/80 backdrop-blur-xl border-b border-border/60">
+        <header className="sticky top-0 z-20 bg-background/80 backdrop-blur-xl border-b border-border/60 safe-top">
           <div className="max-w-2xl mx-auto px-4">
             {/* Top bar */}
             <div className="flex items-center justify-between h-11">
@@ -469,17 +469,17 @@ export function DashboardPage() {
               </Badge>
             </div>
 
-            {/* Tab bar */}
-            <div className="flex gap-1 -mb-px">
+            {/* Tab bar — 44px min touch target */}
+            <div className="flex -mb-px">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'relative px-4 py-2.5 text-[13px] font-medium transition-colors',
+                    'relative flex-1 min-h-[44px] flex items-center justify-center text-[13px] font-medium transition-colors',
                     activeTab === tab.id
                       ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground/70'
+                      : 'text-muted-foreground active:text-foreground/60'
                   )}
                 >
                   <span className="sm:inline hidden">{tab.label}</span>
@@ -487,7 +487,7 @@ export function DashboardPage() {
                   {activeTab === tab.id && (
                     <motion.div
                       layoutId="tab-indicator"
-                      className="absolute bottom-0 left-2 right-2 h-[2px] bg-foreground rounded-full"
+                      className="absolute bottom-0 left-3 right-3 h-[2px] bg-foreground rounded-full"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -498,7 +498,7 @@ export function DashboardPage() {
         </header>
 
         {/* Tab Content */}
-        <main className="max-w-2xl mx-auto px-4 pt-5 pb-24">
+        <main className="max-w-2xl mx-auto px-4 pt-4 sm:pt-5 pb-28 safe-bottom">
           <AnimatePresence mode="wait">
             {activeTab === 'overview' && (
               <motion.div
@@ -537,7 +537,7 @@ export function DashboardPage() {
         </main>
 
         {/* FAB — mobile only */}
-        <div className="fixed bottom-6 right-6 sm:hidden z-30">
+        <div className="fixed bottom-6 right-4 sm:hidden z-30">
           <Button
             onClick={() => navigate('/upload')}
             className="rounded-full h-12 px-5 gap-2 shadow-lg shadow-black/20 font-heading text-[13px] font-semibold"
